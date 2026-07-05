@@ -22,7 +22,7 @@ const keep = (sf) =>
     /(^|\/)src\//.test(sf) &&
     !/(^|\/)src\/core\//.test(sf) &&
     !/(^|\/)src\/tsPlugin\//.test(sf) &&
-    !/\.(test|spec)\.[cm]?[jt]s$/.test(sf);
+    !/\.(int-spec|spec|test)\.[cm]?[jt]s$/.test(sf);
 
 const records = readFileSync(path, 'utf8')
     .split('end_of_record')

@@ -12,10 +12,10 @@ export default defineConfig({
             // that can't run outside an extension host — so the numbers
             // reflect real coverage instead of a misleading 100%.
             include: ['src/**'],
-            // Spec files are the unit tests; *.test.ts are the integration
+            // *.spec.ts are the unit tests; *.int-spec.ts are the integration
             // smokes that run in a real VS Code host (see .vscode-test.mjs),
             // not under vitest — neither is product code to be measured.
-            exclude: ['**/*.spec.{ts,tsx}', '**/*.test.{ts,tsx}'],
+            exclude: ['**/*.spec.{ts,tsx}', '**/*.int-spec.{ts,tsx}'],
             reporter: ['text', 'html', 'lcov'],
             reportsDirectory: 'coverage',
         },

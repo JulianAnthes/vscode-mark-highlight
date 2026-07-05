@@ -12,8 +12,8 @@
         "sourceMap": true,
         "types": ["node", "vscode", "mocha"]
     },
-    "include": ["src/integration"],
-    // Override the base exclude (which drops src/integration) so this config,
+    "include": ["src/**/*.int-spec.ts"],
+    // Override the base exclude (which drops *.int-spec.ts) so this config,
     // which owns the integration tests, actually compiles them.
     "exclude": ["node_modules", "dist", "examples"]
 }

@@ -6,7 +6,7 @@ import { defineConfig } from '@vscode/test-cli';
 export default defineConfig({
     tests: [
         {
-            files: 'out/integration/**/*.test.js',
+            files: 'out/**/*.int-spec.js',
             version: 'stable',
             mocha: {
                 ui: 'tdd',

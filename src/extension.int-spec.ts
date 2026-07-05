@@ -95,4 +95,60 @@ suite('mark outline (integration)', () => {
             'the real TS symbols should remain in the outline',
         );
     });
+
+    // Exercises onDidChangeTextDocument -> debounced decorator refresh: a mark
+    // typed into an already-open document must surface without reopening it.
+    test('editing a document picks up a newly typed mark', async () => {
+        const doc = await vscode.workspace.openTextDocument({
+            language: 'css',
+            content: '.a { color: red; }\n',
+        });
+        const editor = await vscode.window.showTextDocument(doc);
+
+        await editor.edit((builder) => {
+            builder.insert(
+                new vscode.Position(0, 0),
+                '/* MARK: - Inserted */\n',
+            );
+        });
+
+        const symbols = await waitForSymbol(doc.uri, 'Inserted', 15000);
+        assert.ok(
+            symbols.some((s) => s.name === 'Inserted'),
+            'a mark typed into an open document should reach the outline',
+        );
+    });
+
+    // Exercises onDidChangeConfiguration -> recreate + syncTsPlugin + provider
+    // re-registration: a keyword change must be honored live, and the old
+    // keyword must stop matching.
+    test('changing the keyword setting is applied live', async () => {
+        const settings = vscode.workspace.getConfiguration('markComments');
+        const original = settings.inspect<string>('keyword')?.globalValue;
+        await settings.update(
+            'keyword',
+            'SECTION:',
+            vscode.ConfigurationTarget.Global,
+        );
+
+        try {
+            const doc = await vscode.workspace.openTextDocument({
+                language: 'css',
+                content: '/* SECTION: Custom */\n.b { color: blue; }\n',
+            });
+            await vscode.window.showTextDocument(doc);
+
+            const symbols = await waitForSymbol(doc.uri, 'Custom', 15000);
+            assert.ok(
+                symbols.some((s) => s.name === 'Custom'),
+                'the custom keyword should be honored after a settings change',
+            );
+        } finally {
+            await settings.update(
+                'keyword',
+                original,
+                vscode.ConfigurationTarget.Global,
+            );
+        }
+    });
 });
