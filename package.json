@@ -15,6 +15,7 @@
     "homepage": "https://github.com/JulianAnthes/vscode-mark-highlight#readme",
     "type": "commonjs",
     "main": "./dist/extension.js",
+    "icon": "vscode-mark-highlight.png",
     "engines": {
         "vscode": "^1.90.0"
     },
