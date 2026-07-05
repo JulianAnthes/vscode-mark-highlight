@@ -1,6 +1,6 @@
 .vscode/**
 src/**
-test/**
+**/*.spec.*
 examples/**
 plugin/**
 node_modules/**

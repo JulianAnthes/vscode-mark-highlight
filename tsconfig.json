@@ -12,6 +12,6 @@
         "forceConsistentCasingInFileNames": true,
         "types": ["node", "vscode"]
     },
-    "include": ["src", "test", "vitest.config.ts"],
+    "include": ["src", "vitest.config.ts"],
     "exclude": ["node_modules", "dist", "examples"]
 }
