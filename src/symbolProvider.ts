@@ -4,17 +4,11 @@ import { markRanges } from './adapter';
 import { commentSyntaxFor } from './commentSyntax';
 import { MarkConfig } from './config';
 import { findMarks } from './core/findMarks';
+import { TS_SERVER_LANGUAGES, shouldEmitMarkSymbols } from './core/symbolGate';
 
-/** Languages whose outline comes from the built-in TS extension. For these,
- *  marks are injected into the TypeScript symbol tree by the bundled tsserver
- *  plugin — emitting symbols here as well would duplicate them and split the
- *  Outline into one tree per provider (microsoft/vscode#60641). */
-export const TS_SERVER_LANGUAGES = new Set([
-    'typescript',
-    'typescriptreact',
-    'javascript',
-    'javascriptreact',
-]);
+// Re-exported for callers that key off the TS family; the set and the gating
+// predicate live in core so they can be unit tested without the extension host.
+export { TS_SERVER_LANGUAGES };
 
 const tsExtensionPresent = (): boolean =>
     vscode.extensions.getExtension('vscode.typescript-language-features') !==
@@ -29,10 +23,12 @@ class MarkSymbolProvider implements vscode.DocumentSymbolProvider {
         const config = this.getConfig();
         const syntax = commentSyntaxFor(document.languageId);
         if (
-            !config.enabled ||
-            syntax === null ||
-            (tsExtensionPresent() &&
-                TS_SERVER_LANGUAGES.has(document.languageId))
+            !shouldEmitMarkSymbols({
+                enabled: config.enabled,
+                hasSyntax: syntax !== null,
+                languageId: document.languageId,
+                tsExtensionPresent: tsExtensionPresent(),
+            })
         ) {
             return [];
         }
@@ -41,7 +37,8 @@ class MarkSymbolProvider implements vscode.DocumentSymbolProvider {
         // that provider's tree — VSCode cannot merge Outline trees, and a
         // separate tree was chosen over hiding the marks. Languages without
         // another provider get the marks as their only outline.
-        return findMarks(document.getText(), config.keyword, syntax).map(
+        // The gate above returned early unless syntax was non-null.
+        return findMarks(document.getText(), config.keyword, syntax!).map(
             (mark) => {
                 const { lineRange, titleRange } = markRanges(mark, document);
                 return new vscode.DocumentSymbol(

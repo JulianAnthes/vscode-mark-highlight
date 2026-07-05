@@ -1,21 +1,12 @@
 import * as vscode from 'vscode';
 
-export interface MarkConfig {
-    enabled: boolean;
-    keyword: string;
-    languages: string[];
-    borderColor: string;
-    borderStyle: string;
-    borderWidth: string;
-    overviewRuler: boolean;
-}
+import { MarkConfig, languageEnabled } from './core/config';
 
-/** True when the language participates, honoring the "*" wildcard entry. */
-export const languageEnabled = (
-    config: MarkConfig,
-    languageId: string,
-): boolean =>
-    config.languages.includes('*') || config.languages.includes(languageId);
+// The configuration shape and the pure predicate live in core so they can be
+// unit tested without the extension host; re-exported here so callers keep a
+// single import site.
+export type { MarkConfig };
+export { languageEnabled };
 
 export const readConfig = (): MarkConfig => {
     const config = vscode.workspace.getConfiguration('markComments');

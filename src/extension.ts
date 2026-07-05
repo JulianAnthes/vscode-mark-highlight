@@ -5,6 +5,7 @@ import * as vscode from 'vscode';
 
 import { registerCommentSyntaxCacheReset } from './commentSyntax';
 import { MarkConfig, languageEnabled, readConfig } from './config';
+import { Debouncer } from './core/debouncer';
 import { MarkDecorator } from './decorations';
 import { registerMarkSymbolProvider } from './symbolProvider';
 
@@ -104,33 +105,6 @@ const syncTsPlugin = async (
         // Best effort — worst case the Outline refreshes on the next edit.
     }
 };
-
-/** Debounces per document, and drops pending timers on dispose so a late
- *  callback can never touch a disposed decoration type. */
-class Debouncer implements vscode.Disposable {
-    private readonly timers = new Map<string, ReturnType<typeof setTimeout>>();
-
-    schedule(key: string, fn: () => void, delayMs: number): void {
-        const pending = this.timers.get(key);
-        if (pending !== undefined) {
-            clearTimeout(pending);
-        }
-        this.timers.set(
-            key,
-            setTimeout(() => {
-                this.timers.delete(key);
-                fn();
-            }, delayMs),
-        );
-    }
-
-    dispose(): void {
-        for (const timer of this.timers.values()) {
-            clearTimeout(timer);
-        }
-        this.timers.clear();
-    }
-}
 
 export const activate = (context: vscode.ExtensionContext): void => {
     let config: MarkConfig = readConfig();

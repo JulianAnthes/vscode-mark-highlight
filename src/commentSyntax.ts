@@ -1,9 +1,9 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
-import { parse as parseJsonc } from 'jsonc-parser';
 import * as vscode from 'vscode';
 
+import { parseCommentSyntax } from './core/commentSyntax';
 import { CommentSyntax } from './core/findMarks';
 
 /** Discovers a language's comment tokens from the language-configuration.json
@@ -28,26 +28,14 @@ const discover = (languageId: string): CommentSyntax | null => {
                 continue;
             }
             try {
-                const comments = parseJsonc(
+                const syntax = parseCommentSyntax(
                     readFileSync(
                         join(extension.extensionPath, language.configuration),
                         'utf8',
                     ),
-                )?.comments;
-                const line =
-                    typeof comments?.lineComment === 'string'
-                        ? [comments.lineComment]
-                        : [];
-                const block: [string, string][] =
-                    Array.isArray(comments?.blockComment) &&
-                    comments.blockComment.length === 2 &&
-                    comments.blockComment.every(
-                        (token: unknown) => typeof token === 'string',
-                    )
-                        ? [[comments.blockComment[0], comments.blockComment[1]]]
-                        : [];
-                if (line.length > 0 || block.length > 0) {
-                    return { line, block };
+                );
+                if (syntax !== null) {
+                    return syntax;
                 }
             } catch {
                 // Unreadable configuration — keep looking; another extension
