@@ -13,5 +13,7 @@
         "types": ["node", "vscode"]
     },
     "include": ["src", "vitest.config.ts"],
-    "exclude": ["node_modules", "dist", "examples"]
+    // Integration tests run under Mocha in a VS Code host — they have their own
+    // config (tsconfig.test.json) that pulls in the mocha globals.
+    "exclude": ["node_modules", "dist", "examples", "src/integration"]
 }

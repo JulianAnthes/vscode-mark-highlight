@@ -1,7 +1,11 @@
 .vscode/**
+.vscode-test/**
+.vscode-test.mjs
 .github/**
 src/**
+out/**
 **/*.spec.*
+**/*.test.*
 examples/**
 plugin/**
 node_modules/**
@@ -10,6 +14,7 @@ scripts/**
 docs/**
 esbuild.mjs
 tsconfig.json
+tsconfig.test.json
 vitest.config.ts
 .gitignore
 .gitattributes

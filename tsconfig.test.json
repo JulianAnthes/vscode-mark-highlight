@@ -1,0 +1,19 @@
+{
+    // Integration tests run inside a real VS Code host (Mocha over CommonJS),
+    // so unlike the base config they must actually emit JS. Everything else is
+    // inherited.
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "noEmit": false,
+        "outDir": "out",
+        "rootDir": "src",
+        "module": "Node16",
+        "moduleResolution": "Node16",
+        "sourceMap": true,
+        "types": ["node", "vscode", "mocha"]
+    },
+    "include": ["src/integration"],
+    // Override the base exclude (which drops src/integration) so this config,
+    // which owns the integration tests, actually compiles them.
+    "exclude": ["node_modules", "dist", "examples"]
+}

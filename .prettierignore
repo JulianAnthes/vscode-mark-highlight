@@ -1,4 +1,5 @@
 dist/
+out/
 .vscode-test/
 package-lock.json
 examples/
