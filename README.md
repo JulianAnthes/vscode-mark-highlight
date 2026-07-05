@@ -1,7 +1,7 @@
 # Mark Highlight — Xcode-style `// MARK:` comments for VSCode
 
 [![Code Quality](https://github.com/JulianAnthes/vscode-mark-highlight/actions/workflows/code-quality.yml/badge.svg)](https://github.com/JulianAnthes/vscode-mark-highlight/actions/workflows/code-quality.yml)
-[![codecov](https://codecov.io/github/JulianAnthes/vscode-mark-highlight/branch/main/graph/badge.svg?token=4AKZSAXNBX)](https://codecov.io/github/JulianAnthes/vscode-mark-highlight)
+[![codecov](https://codecov.io/github/JulianAnthes/vscode-mark-highlight/branch/main/graph/badge.svg)](https://codecov.io/github/JulianAnthes/vscode-mark-highlight)
 [![Made for VS Code](https://img.shields.io/badge/Made%20for-VS%20Code-007ACC?logo=visualstudiocode&logoColor=white)](https://code.visualstudio.com/)
 [![Code style: Prettier](https://img.shields.io/badge/code%20style-prettier-ff69b4.svg?logo=prettier&logoColor=white)](https://prettier.io/)
 [![License: ISC](https://img.shields.io/badge/license-ISC-blue.svg)](LICENSE)
