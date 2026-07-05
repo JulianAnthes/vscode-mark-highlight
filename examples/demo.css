@@ -1,0 +1,28 @@
+/* MARK: - Variables */
+
+:root {
+    --accent: #7aa2f7;
+    --spacing: 1rem;
+}
+
+/* MARK: - Layout */
+
+main {
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: var(--spacing);
+}
+
+/* MARK: Components (dashless mark) */
+
+.button {
+    background: var(--accent);
+    border-radius: 0.5rem;
+    padding: 0.5rem var(--spacing);
+}
+
+/* MARK: - */
+
+footer {
+    opacity: 0.7;
+}

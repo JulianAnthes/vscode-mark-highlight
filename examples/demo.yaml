@@ -1,0 +1,19 @@
+# MARK: - Services
+
+services:
+    web:
+        image: nginx:alpine
+        ports:
+            - '8080:80'
+
+    # MARK: - Database
+
+    db:
+        image: postgres:16
+        environment:
+            POSTGRES_DB: app
+
+# MARK: Volumes (dashless mark)
+
+volumes:
+    pgdata: {}

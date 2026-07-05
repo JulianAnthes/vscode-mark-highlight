@@ -1,0 +1,117 @@
+{
+    "name": "vscode-mark-highlight",
+    "version": "1.0.0",
+    "description": "Xcode-style // MARK: comments for TypeScript: outline symbols and horizontal rules",
+    "license": "ISC",
+    "author": "",
+    "publisher": "julian-anthes",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/JulianAnthes/vscode-mark-highlight.git"
+    },
+    "bugs": {
+        "url": "https://github.com/JulianAnthes/vscode-mark-highlight/issues"
+    },
+    "homepage": "https://github.com/JulianAnthes/vscode-mark-highlight#readme",
+    "type": "commonjs",
+    "main": "./dist/extension.js",
+    "engines": {
+        "vscode": "^1.90.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onStartupFinished"
+    ],
+    "contributes": {
+        "typescriptServerPlugins": [
+            {
+                "name": "vscode-mark-highlight-ts-plugin",
+                "enableForWorkspaceTypeScriptVersions": true
+            }
+        ],
+        "configuration": {
+            "title": "Mark Comments",
+            "properties": {
+                "markComments.enabled": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable MARK comment outline symbols and horizontal rules."
+                },
+                "markComments.keyword": {
+                    "type": "string",
+                    "default": "MARK: -",
+                    "description": "Keyword that starts a mark comment. A trailing '-' is treated as optional when matching."
+                },
+                "markComments.languages": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": [
+                        "*"
+                    ],
+                    "description": "Language IDs to process. \"*\" means every language that declares comment syntax; each language is parsed with its own line/block comment tokens."
+                },
+                "markComments.borderColor": {
+                    "type": "string",
+                    "default": "rgba(128,128,128,0.45)",
+                    "description": "Color of the horizontal rule (any CSS color)."
+                },
+                "markComments.borderStyle": {
+                    "type": "string",
+                    "default": "solid",
+                    "enum": [
+                        "solid",
+                        "dashed",
+                        "dotted",
+                        "double"
+                    ],
+                    "description": "Style of the horizontal rule."
+                },
+                "markComments.borderWidth": {
+                    "type": "string",
+                    "default": "1px 0 0 0",
+                    "description": "CSS border-width for the rule, in top/right/bottom/left order. The default '1px 0 0 0' draws the rule ABOVE the mark line; '0 0 1px 0' would draw it below."
+                },
+                "markComments.overviewRuler": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Show a tick in the right-hand overview ruler for each mark."
+                }
+            }
+        }
+    },
+    "scripts": {
+        "build": "node esbuild.mjs",
+        "watch": "node esbuild.mjs --watch",
+        "typecheck": "tsc --noEmit",
+        "test": "vitest run",
+        "test:coverage": "vitest run --coverage",
+        "screenshots": "node scripts/screenshots.mjs",
+        "package": "npm run build && vsce package --no-dependencies",
+        "prettier:check": "npx prettier --check .",
+        "prettier:write": "npx prettier --write ."
+    },
+    "devDependencies": {
+        "@trivago/prettier-plugin-sort-imports": "^6.0.2",
+        "@types/node": "^20.14.0",
+        "@types/vscode": "~1.90.0",
+        "@vitest/coverage-v8": "^4.1.9",
+        "@vscode/test-electron": "^3.0.0",
+        "@vscode/vsce": "^3.9.2",
+        "esbuild": "^0.28.1",
+        "jsonc-parser": "^3.3.1",
+        "prettier": "^3.9.4",
+        "typescript": "^6.0.3",
+        "vitest": "^4.1.9"
+    },
+    "allowScripts": {
+        "esbuild@0.25.12": true,
+        "esbuild@0.28.1": true,
+        "keytar@7.9.0": true,
+        "@vscode/vsce-sign@2.0.9": true,
+        "fsevents@2.3.3": true
+    }
+}

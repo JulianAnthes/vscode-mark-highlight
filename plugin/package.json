@@ -1,0 +1,7 @@
+{
+    "name": "vscode-mark-highlight-ts-plugin",
+    "version": "1.0.0",
+    "description": "tsserver plugin that injects // MARK: comments into the TypeScript navigation tree",
+    "main": "index.js",
+    "license": "ISC"
+}

@@ -1,0 +1,5 @@
+dist/
+.vscode-test/
+package-lock.json
+examples/
+coverage/
