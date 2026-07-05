@@ -11,7 +11,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
-              uses: actions/checkout@v5
+              uses: actions/checkout@v7
 
             - name: Setup
               uses: ./.github/actions/setup
@@ -20,16 +20,40 @@ jobs:
               run: npm run test:coverage
 
             - name: Upload coverage reports to Codecov
-              uses: codecov/codecov-action@v5
+              uses: codecov/codecov-action@v7
               with:
                   token: ${{ secrets.CODECOV_TOKEN }}
+
+    integration:
+        name: Integration (VS Code host)
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v7
+
+            - name: Setup
+              uses: ./.github/actions/setup
+
+            # Cache the downloaded VS Code build (~270 MB) so only the first run
+            # (or a bump to the pinned version) pays the download cost.
+            - name: Cache VS Code test host
+              uses: actions/cache@v6
+              with:
+                  path: .vscode-test
+                  key: ${{ runner.os }}-vscode-test-${{ hashFiles('.vscode-test.mjs') }}
+                  restore-keys: |
+                      ${{ runner.os }}-vscode-test-
+
+            # The smoke suite launches a real VS Code, which needs a display.
+            - name: Run integration tests
+              run: xvfb-run -a npm run test:integration
 
     typecheck:
         name: Typecheck
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
-              uses: actions/checkout@v5
+              uses: actions/checkout@v7
 
             - name: Setup
               uses: ./.github/actions/setup
@@ -42,7 +66,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
-              uses: actions/checkout@v5
+              uses: actions/checkout@v7
 
             - name: Setup
               uses: ./.github/actions/setup
