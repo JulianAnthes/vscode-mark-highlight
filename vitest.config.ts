@@ -7,13 +7,12 @@ export default defineConfig({
         coverage: {
             provider: 'v8',
             // Measure the whole extension, not just the unit-tested core.
-            // `all: true` reports every source file — including the
+            // The `include` glob reports every source file — including the
             // vscode-coupled layer (extension.ts, decorations, providers)
             // that can't run outside an extension host — so the numbers
             // reflect real coverage instead of a misleading 100%.
             include: ['src/**'],
             exclude: ['**/*.spec.{ts,tsx}'],
-            all: true,
             reporter: ['text', 'html', 'lcov'],
             reportsDirectory: 'coverage',
         },
