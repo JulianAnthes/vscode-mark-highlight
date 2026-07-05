@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { findMarks } from '../src/core/findMarks';
+import { findMarks } from './findMarks';
 
 const KEYWORD = 'MARK: -';
 

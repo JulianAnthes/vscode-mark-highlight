@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { topOnlyRuleWidthPx } from '../src/core/borderWidth';
+import { topOnlyRuleWidthPx } from './borderWidth';
 
 describe('topOnlyRuleWidthPx', () => {
     it('parses the default top-only shorthand', () => {
