@@ -1,4 +1,5 @@
 .vscode/**
+.github/**
 src/**
 **/*.spec.*
 examples/**
@@ -11,6 +12,8 @@ esbuild.mjs
 tsconfig.json
 vitest.config.ts
 .gitignore
+.gitattributes
+**/.DS_Store
 .prettierrc
 .prettierignore
 **/*.map
