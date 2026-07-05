@@ -4,7 +4,7 @@
     "description": "Xcode-style // MARK: comments for TypeScript: outline symbols and horizontal rules",
     "license": "ISC",
     "author": "",
-    "publisher": "julian-anthes",
+    "publisher": "JulianAnthes",
     "repository": {
         "type": "git",
         "url": "https://github.com/JulianAnthes/vscode-mark-highlight.git"
