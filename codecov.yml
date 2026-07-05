@@ -1,0 +1,37 @@
+# Coverage comes from two suites that Codecov merges by flag:
+#   - unit:        the vitest run (src/core/** + src/tsPlugin/**)
+#   - integration: the VS Code host smoke, filtered to the vscode-coupled layer
+#                  (src/adapter, commentSyntax, config, decorations, extension,
+#                  symbolProvider) — see scripts/filter-integration-lcov.mjs.
+# The unit suite stays the source of truth for core/ and tsPlugin/; the
+# integration suite is the only source for the vscode-coupled files.
+
+coverage:
+    status:
+        project:
+            default:
+                target: auto
+                # Don't fail CI on sub-1% noise between the two runs.
+                threshold: 1%
+        patch:
+            default:
+                target: auto
+                threshold: 1%
+
+flags:
+    unit:
+        carryforward: false
+    integration:
+        carryforward: false
+
+comment:
+    layout: 'reach, diff, flags, files'
+
+# Belt-and-suspenders: neither uploaded report should contain these, but make it
+# explicit so a stray entry can never inflate or pollute the number.
+ignore:
+    - '**/*.spec.*'
+    - '**/*.test.*'
+    - 'out'
+    - 'dist'
+    - 'node_modules'

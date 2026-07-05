@@ -23,6 +23,8 @@ jobs:
               uses: codecov/codecov-action@v7
               with:
                   token: ${{ secrets.CODECOV_TOKEN }}
+                  files: ./coverage/lcov.info
+                  flags: unit
 
     integration:
         name: Integration (VS Code host)
@@ -45,8 +47,18 @@ jobs:
                       ${{ runner.os }}-vscode-test-
 
             # The smoke suite launches a real VS Code, which needs a display.
-            - name: Run integration tests
-              run: xvfb-run -a npm run test:integration
+            # Coverage of the extension host is remapped to src/ and filtered to
+            # the vscode-coupled layer (see the npm script), then merged at
+            # Codecov with the unit report under a separate flag.
+            - name: Run integration tests with coverage
+              run: xvfb-run -a npm run test:integration:coverage
+
+            - name: Upload integration coverage to Codecov
+              uses: codecov/codecov-action@v7
+              with:
+                  token: ${{ secrets.CODECOV_TOKEN }}
+                  files: ./coverage/integration/lcov.info
+                  flags: integration
 
     typecheck:
         name: Typecheck
