@@ -10,11 +10,8 @@
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
-        "types": ["node", "vscode"]
+        "types": ["node", "vscode", "mocha"]
     },
     "include": ["src", "vitest.config.ts"],
-    // Integration tests (*.int-spec.ts) run under Mocha in a VS Code host —
-    // they have their own config (tsconfig.test.json) that pulls in the mocha
-    // globals, so exclude them from the base (vscode-typed) typecheck.
-    "exclude": ["node_modules", "dist", "examples", "**/*.int-spec.ts"]
+    "exclude": ["node_modules", "dist", "examples"]
 }
