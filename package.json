@@ -1,6 +1,6 @@
 {
     "name": "vscode-mark-highlight",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "displayName": "Mark Highlight",
     "description": "Xcode-style // MARK: comments for any language — a divider in the editor and a jump point in the Outline.",
     "keywords": [
