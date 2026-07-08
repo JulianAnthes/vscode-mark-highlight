@@ -161,5 +161,105 @@ describe('findMarks', () => {
                 { title: 'Styles', line: 0, startCol: 11, endCol: 17 },
             ]);
         });
+
+        it('matches a single-line JSDoc block (extra asterisk)', () => {
+            const marks = findMarks('/** MARK: - Section */', KEYWORD);
+            expect(marks).toEqual([
+                { title: 'Section', line: 0, startCol: 12, endCol: 19 },
+            ]);
+        });
+
+        it('matches a JSDoc block with several leading asterisks', () => {
+            const marks = findMarks('/*** MARK: - Section */', KEYWORD);
+            expect(marks).toEqual([
+                { title: 'Section', line: 0, startCol: 13, endCol: 20 },
+            ]);
+        });
+
+        it('matches a mark on a JSDoc star-gutter line', () => {
+            const marks = findMarks('/**\n * MARK: - Section\n */', KEYWORD);
+            expect(marks).toEqual([
+                {
+                    title: 'Section',
+                    line: 1,
+                    startCol: 11,
+                    endCol: 18,
+                    ruleLine: 0,
+                },
+            ]);
+        });
+
+        it('matches a star-gutter line inside a plain block comment', () => {
+            const marks = findMarks('/*\n * MARK: - Section\n */', KEYWORD);
+            expect(marks).toEqual([
+                {
+                    title: 'Section',
+                    line: 1,
+                    startCol: 11,
+                    endCol: 18,
+                    ruleLine: 0,
+                },
+            ]);
+        });
+
+        it('points the rule past intermediate description gutter lines', () => {
+            const marks = findMarks(
+                '/**\n * Docs\n * MARK: - Section\n */',
+                KEYWORD,
+            );
+            expect(marks).toEqual([
+                {
+                    title: 'Section',
+                    line: 2,
+                    startCol: 11,
+                    endCol: 18,
+                    ruleLine: 0,
+                },
+            ]);
+        });
+
+        it('strips a trailing close on the last gutter line of a block', () => {
+            const marks = findMarks('/*\n * MARK: - Section */', KEYWORD);
+            expect(marks).toEqual([
+                {
+                    title: 'Section',
+                    line: 1,
+                    startCol: 11,
+                    endCol: 18,
+                    ruleLine: 0,
+                },
+            ]);
+        });
+
+        it('rejects a star-gutter mark with no block opener above it', () => {
+            expect(findMarks(' * MARK: - x', KEYWORD)).toEqual([]);
+            expect(findMarks('code();\n * MARK: - x', KEYWORD)).toEqual([]);
+        });
+
+        it('rejects a star-gutter mark after the block already closed', () => {
+            expect(findMarks('/* done */\n * MARK: - x', KEYWORD)).toEqual([]);
+        });
+
+        it('rejects a star-gutter mark inside a string literal', () => {
+            const text = 'const banner = `\n * MARK: - x\n`;';
+            expect(findMarks(text, KEYWORD)).toEqual([]);
+        });
+
+        it('matches a mark on the opening line of a multi-line block', () => {
+            expect(findMarks('/** MARK: - A\n */', KEYWORD)).toEqual([
+                { title: 'A', line: 0, startCol: 12, endCol: 13 },
+            ]);
+            expect(findMarks('/* MARK: - A\n */', KEYWORD)).toEqual([
+                { title: 'A', line: 0, startCol: 11, endCol: 12 },
+            ]);
+        });
+
+        it('does not treat a star gutter as a comment for non-C block syntax', () => {
+            expect(
+                findMarks(' * MARK: - x', KEYWORD, {
+                    block: [['<!--', '-->']],
+                }),
+            ).toEqual([]);
+        });
     });
 });

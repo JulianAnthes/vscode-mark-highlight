@@ -96,6 +96,24 @@ suite('mark outline (integration)', () => {
         );
     });
 
+    test('a multi-line JSDoc MARK surfaces via the tsserver plugin', async () => {
+        const file = join(tempDir, 'jsdoc.ts');
+        writeFileSync(
+            file,
+            '/**\n * MARK: - Block\n */\nexport const value = 1;\n',
+        );
+        const doc = await vscode.workspace.openTextDocument(
+            vscode.Uri.file(file),
+        );
+        await vscode.window.showTextDocument(doc);
+
+        const symbols = await waitForSymbol(doc.uri, 'Block', 45000);
+        assert.ok(
+            symbols.some((s) => s.name === 'Block'),
+            'expected a star-gutter "Block" mark injected into the TS outline',
+        );
+    });
+
     // Exercises onDidChangeTextDocument -> debounced decorator refresh: a mark
     // typed into an already-open document must surface without reopening it.
     test('editing a document picks up a newly typed mark', async () => {

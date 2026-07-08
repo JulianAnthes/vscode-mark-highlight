@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 
-import { markRanges } from './adapter';
 import { commentSyntaxFor } from './commentSyntax';
 import { MarkConfig, languageEnabled } from './config';
 import { findMarks } from './core/findMarks';
@@ -41,11 +40,16 @@ export class MarkDecorator implements vscode.Disposable {
             editor.setDecorations(this.decorationType, []);
             return;
         }
+        // For a mark on a block comment's `*`-gutter line, `mark.ruleLine`
+        // points at the opener so the rule is drawn above the whole comment
+        // rather than inside it; every other mark uses its own line.
         const ranges = findMarks(
             editor.document.getText(),
             config.keyword,
             syntax,
-        ).map((mark) => markRanges(mark, editor.document).lineRange);
+        ).map(
+            (mark) => editor.document.lineAt(mark.ruleLine ?? mark.line).range,
+        );
         editor.setDecorations(this.decorationType, ranges);
     }
 

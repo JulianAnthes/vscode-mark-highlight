@@ -43,6 +43,44 @@ const formatEmail = (user: User): string => {
     return `${user.name} <${user.email}>${notAMark.length > 0 ? '' : ''}`;
 };
 
+/**
+ * MARK: - Validation
+ */
+
+const isValidEmail = (email: string): boolean =>
+    /^[^@\s]+@[^@\s]+$/.test(email);
+
+const isValidUser = (user: User): boolean =>
+    user.id.length > 0 && user.name.length > 0 && isValidEmail(user.email);
+
+/*
+ * MARK: - Serialization
+ */
+
+const toJson = (user: User): string => JSON.stringify(user);
+
+const fromJson = (raw: string): User => JSON.parse(raw) as User;
+
+/** MARK: - Defaults */
+
+const GUEST: User = { id: '0', name: 'Guest', email: 'guest@example.com' };
+
+/* MARK: - Demo */
+
+const seed = (): UserStore => {
+    const store = new UserStore();
+    if (isValidUser(GUEST)) {
+        store.add(GUEST);
+    }
+
+    const banner = `
+        * MARK: - Header
+    `;
+    console.log(`No false positives: ${banner} 👆`)
+    
+    return store;
+};
+
 // MARK: -
 
-export { UserStore, greet, formatEmail };
+export { formatEmail, fromJson, greet, isValidUser, seed, toJson, UserStore };
