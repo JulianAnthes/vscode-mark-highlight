@@ -19,6 +19,10 @@
         "breadcrumbs",
         "typescript"
     ],
+    "categories": [
+        "Visualization",
+        "Programming Languages"
+    ],
     "license": "ISC",
     "author": "",
     "publisher": "JulianAnthes",
@@ -36,9 +40,6 @@
     "engines": {
         "vscode": "^1.90.0"
     },
-    "categories": [
-        "Other"
-    ],
     "activationEvents": [
         "onStartupFinished"
     ],
